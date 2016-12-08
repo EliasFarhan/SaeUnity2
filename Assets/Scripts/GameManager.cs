@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-	[SerializeField] int prout = 3;
+	[SerializeField] int prout = 5;
 
 	void Awake() {
-		prout = 6;
+
 	}
 
 	// Use this for initialization
 	void Start () {
-		//prout = 7;
+		DontDestroyOnLoad (gameObject);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (prout == 6)
+			SceneManager.LoadScene ("Test2");
 	}
 
 	void FixedUpdate () {
