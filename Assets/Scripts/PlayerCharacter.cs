@@ -20,6 +20,9 @@ namespace SaeUnity
 		const float walkDeadZone = 0.1f;
 		[SerializeField] Animator m_Anim;
 
+		[SerializeField] Projectile m_ProjectilePrefab;
+		const float projectileSpeed = 5.0f;
+
 		void Awake()
 		{
 			m_Body = GetComponent<Rigidbody2D> ();
@@ -73,6 +76,14 @@ namespace SaeUnity
 				m_Anim.SetBool ("walking", false);
 				m_Anim.SetBool ("jumping", true);
 			}
+				
+		}
+		public void Fire(Vector2 dir)
+		{
+			Projectile newProjectile = Instantiate (m_ProjectilePrefab);
+			Destroy (newProjectile.gameObject, 0.5f);
+			newProjectile.transform.position = transform.position;
+			newProjectile.GetComponent<Rigidbody2D> ().velocity = dir * projectileSpeed;
 				
 		}
 
