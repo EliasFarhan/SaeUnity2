@@ -17,6 +17,8 @@ namespace SaeUnity
 		bool m_Grounded = false;
 
 		int doubleJump = 0;
+		const float walkDeadZone = 0.1f;
+		[SerializeField] Animator m_Anim;
 
 		void Awake()
 		{
@@ -57,6 +59,19 @@ namespace SaeUnity
 				if (!m_Grounded) {
 					doubleJump--;
 				}
+			}
+
+			//Animation management
+			if (m_Grounded) {
+				m_Anim.SetBool ("jumping", false);
+				if (Mathf.Abs (horizontal) < walkDeadZone) {
+					m_Anim.SetBool ("walking", false);
+				} else {
+					m_Anim.SetBool ("walking", true);
+				}
+			} else {
+				m_Anim.SetBool ("walking", false);
+				m_Anim.SetBool ("jumping", true);
 			}
 				
 		}
