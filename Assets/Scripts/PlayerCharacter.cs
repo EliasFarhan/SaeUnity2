@@ -22,10 +22,13 @@ namespace SaeUnity
 
 		[SerializeField] Projectile m_ProjectilePrefab;
 		const float projectileSpeed = 5.0f;
-
+        AudioSource m_AudioSource;
+        const float stepPeriod = 0.3f;
+        float stepTime = -1.0f;
 		void Awake()
 		{
 			m_Body = GetComponent<Rigidbody2D> ();
+            m_AudioSource = GetComponent<AudioSource>();
 			transform.FindChild ("Foot").GetComponent<Foot> ();
 		}
 		// Use this for initialization
@@ -35,6 +38,11 @@ namespace SaeUnity
 		
 		// Update is called once per frame
 		void Update () {
+            if(stepTime>0.0f)
+            {
+                stepTime -= Time.deltaTime;
+            }
+
 			debugVelocity = m_Body.velocity.y;
 
 			m_Grounded = m_Foot.nmbOfGround > 0;
@@ -56,6 +64,12 @@ namespace SaeUnity
 			} else if (horizontal < 0 && isTurnedRight) {
 				Flip ();
 			}
+
+            if(Mathf.Abs(horizontal)>walkDeadZone && stepTime < 0.0f)
+            {
+                m_AudioSource.Play();
+                stepTime = stepPeriod;
+            }
 
 			if (jump && (m_Grounded || doubleJump == 1)) {
 				m_Body.velocity = new Vector2 (m_Body.velocity.x, jumpVelocity);	
